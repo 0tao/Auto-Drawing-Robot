@@ -1,0 +1,86 @@
+int x1, y, x2; // length of triangles x and y sides
+int d = 400; //distance between motors
+int L1, L2; // current length of each motor string
+int pL1, pL2; // previous length of each motor string
+int m1, m2; // how many steps to move each motor, forwards or backwards
+int px, py;
+float pl3, pl4;
+int xSpeed;
+int ySpeed;
+
+void setup() {
+  frameRate(900);
+  size(400, 400);
+  x1 = 200;
+  y = 200;
+  
+  noFill();
+}
+
+void draw() {
+  background(255);
+   if ((x1 < d-100)&&(x1>100)){        //move in x and y directions randomly if inside boundary
+     xSpeed = int(random(-2,2));
+   
+  }
+if((x1>=d-100)||(x1<=100)){  // if outside or on boundary turn back the other way
+    xSpeed*=-1;
+  }
+  if ((y < d-100)&&(y>100)){
+     ySpeed = int(random(-2,2));
+   
+  }
+  if((y>= d-100)||(y<=100)){
+    ySpeed*=-1;
+  }
+  
+  
+  m1 = L1 - pL1;  //amount of steps to feed each motor = current cord length - previous cord length
+  m2  = L2 - pL2;
+  
+  pL1 = L1; //update previous cord length value
+  pL2 = L2;
+  
+  
+  x2 = d-x1;  //left hand side triangles x (horizontal) length
+  
+  L1 = int(sqrt(pow(x1, 2)+pow(y, 2))); //pythagoras to work out current length of motor cords
+  L2 = int(sqrt(pow(x2, 2)+pow(y, 2)));
+  
+  x1 = x1+xSpeed; //move in the x,y directions specified by the random walker
+  y = y+ySpeed;
+ 
+/*
+  if (keyPressed) {             // move the bot around using arrow keys
+    if (key == CODED) {
+      if (keyCode == UP) {
+        y--;
+      } else if (keyCode == DOWN) {
+        y++;
+      } else if (keyCode == LEFT) {
+        x1--;
+      } else if (keyCode == RIGHT) {
+        x1++;
+      }
+    }
+  }
+  
+ */
+  pushStyle();    //draw two triangles to show you where its currently at
+  stroke(255, 0, 0);
+  triangle(x1, y, 0, 0, 0, y);
+  popStyle();
+  pushStyle();
+  stroke(0, 0, 255);
+  triangle(x1, y, d, 0, d, y);
+  popStyle();
+//background(255);
+  println("M1 = " +m1 + "   M2 = " + m2); //feed this number to the motors - specifying backwards and forwards for negative and positive values
+  rect(100,100,200,200);
+  pushStyle();
+  strokeWeight(10);
+  point(x1,y);               // display dot for the current pen point
+  popStyle();
+  
+  
+}
