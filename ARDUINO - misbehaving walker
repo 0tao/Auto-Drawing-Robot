@@ -1,0 +1,83 @@
+#include <AFMotor.h>
+AF_Stepper LM(200,2), RM(200,1);
+
+int x, x2, y; // left and right x and y positions
+int stepx, stepy; //step direction
+int wide;
+int high;
+int currentLeftStringLength, currentRightStringLength;
+int previousRightStringLength, previousLeftStringLength;
+int leftFeed, rightFeed;
+
+
+void setup(){
+  Serial.begin(38400);
+  delay(2000);
+  LM.setSpeed(50);
+  RM.setSpeed(50);
+  delay(2000);
+  wide = 40;
+  high = 40;
+  x = 5;
+  y = 5;
+
+}
+
+
+void loop(){
+  randomSeed(analogRead(0));
+  x2 = wide-x; //length of left hand x position
+
+  int stepx = int(random(3))-1; //step x left right or nothing
+  int stepy = int(random(3))-1; //step y up down or nothing
+  x+=stepx; //add the step amount to the current x position
+  y+=stepy; //add the step y amount to the current y pos
+  x = constrain(x, 0, wide-1); //constrain x to boundaries
+  y = constrain(y, 0, high-1); //constrain y to boundaries
+
+  leftFeed = currentLeftStringLength - previousLeftStringLength;
+  rightFeed = currentRightStringLength - previousRightStringLength;
+  
+  previousRightStringLength = currentRightStringLength;
+  previousLeftStringLength = currentLeftStringLength;
+
+  currentRightStringLength = int(sqrt(pow(x, 2)+pow(y, 2))); //pythagoras to work out current length of motor cords
+  currentLeftStringLength = int(sqrt(pow(x2, 2)+pow(y, 2)));
+
+  
+  if(leftFeed == 1){
+    LM.step(1,FORWARD, SINGLE);
+    //delay(100);
+  }
+  
+  if(leftFeed == 0){
+    LM.step(0,BACKWARD, SINGLE);
+    //delay(100);
+  }
+  
+  if(leftFeed == -1){
+    LM.step(1,BACKWARD, SINGLE);
+    //delay(100);
+  }
+ 
+ 
+   if(rightFeed == 1){
+    RM.step(1,FORWARD, SINGLE);
+    //delay(100);
+  }
+  
+  if(rightFeed == 0){
+    RM.step(0,BACKWARD, SINGLE);
+    //delay(100);
+  }
+  
+  if(rightFeed == -1){
+    RM.step(1,BACKWARD, SINGLE);
+    //delay(100);
+  }
+  
+}
+
+
+
+
