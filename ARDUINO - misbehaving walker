@@ -45,7 +45,7 @@ void loop(){
   currentLeftStringLength = int(sqrt(pow(x2, 2)+pow(y, 2)));
 
   
-  if(leftFeed == 1){
+  if(leftFeed > 0){
     LM.step(1,FORWARD, SINGLE);
     //delay(100);
   }
@@ -55,13 +55,13 @@ void loop(){
     //delay(100);
   }
   
-  if(leftFeed == -1){
+  if(leftFeed < 0){
     LM.step(1,BACKWARD, SINGLE);
     //delay(100);
   }
  
  
-   if(rightFeed == 1){
+   if(rightFeed > 0){
     RM.step(1,FORWARD, SINGLE);
     //delay(100);
   }
@@ -71,7 +71,7 @@ void loop(){
     //delay(100);
   }
   
-  if(rightFeed == -1){
+  if(rightFeed < 0){
     RM.step(1,BACKWARD, SINGLE);
     //delay(100);
   }
